@@ -107,11 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const dateStr = !isNaN(pubDate) ? `${pubDate.getFullYear()}/${String(pubDate.getMonth() + 1).padStart(2, '0')}/${String(pubDate.getDate()).padStart(2, '0')}` : '';
                         
                         const articleHtml = `
-                            <div class="article-card reveal" style="animation-delay: ${index * 0.1}s">
+                            <a href="${item.link}" target="_blank" class="article-card reveal" style="animation-delay: ${index * 0.1}s">
                                 <div class="article-date"><i class="fa-regular fa-clock"></i> ${dateStr}</div>
-                                <h3 class="article-title">${item.title}</h3>
-                                <a href="${item.link}" target="_blank" class="article-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
-                            </div>
+                                <h3 class="article-title" style="margin-bottom: 0;">${item.title}</h3>
+                            </a>
                         `;
                         articlesContainer.insertAdjacentHTML('beforeend', articleHtml);
                     });
