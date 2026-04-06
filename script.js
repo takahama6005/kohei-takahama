@@ -144,22 +144,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const episodes = data.items.slice(0, 3);
                     
                     episodes.forEach((item, index) => {
-                        let embedSrc = '';
-                        if (item.link.includes('podcasters.spotify.com')) {
-                            const url = new URL(item.link);
-                            embedSrc = `https://podcasters.spotify.com${url.pathname.replace('/episodes/', '/embed/episodes/')}`;
-                        }
+                        const pubDate = new Date(item.pubDate);
+                        const dateStr = !isNaN(pubDate) ? `${pubDate.getFullYear()}/${String(pubDate.getMonth() + 1).padStart(2, '0')}/${String(pubDate.getDate()).padStart(2, '0')}` : '';
                         
-                        if (embedSrc) {
-                            const iframeHtml = `
-                                <iframe style="border-radius:12px; margin-bottom: 1rem;"
-                                    src="${embedSrc}"
-                                    width="100%" height="152" frameBorder="0" allowfullscreen=""
-                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                                    loading="lazy"></iframe>
-                            `;
-                            spotifyContainer.insertAdjacentHTML('beforeend', iframeHtml);
-                        }
+                        const audioSrc = item.enclosure && item.enclosure.link ? item.enclosure.link : '';
+                        
+                        const cardHtml = `
+                            <div class="article-card reveal active" style="animation-delay: ${index * 0.1}s">
+                                <div class="article-date"><i class="fa-solid fa-headphones"></i> ${dateStr}</div>
+                                <h3 class="article-title" style="font-size: 1.15rem; margin-bottom: 1rem; line-height: 1.5; flex-grow: 0;">${item.title}</h3>
+                                <div style="flex-grow: 1;"></div>
+                                ${audioSrc ? `<audio controls src="${audioSrc}" style="width: 100%; height: 44px; margin-bottom: 1rem;"></audio>` : ''}
+                                <a href="${item.link}" target="_blank" class="article-link">Spotifyで開く <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i></a>
+                            </div>
+                        `;
+                        spotifyContainer.insertAdjacentHTML('beforeend', cardHtml);
                     });
                 } else {
                     spotifyContainer.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; color: var(--gray-600);">エピソードが見つかりませんでした。</p>';
