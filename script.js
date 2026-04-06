@@ -130,4 +130,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 articlesContainer.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; color: var(--gray-600);">通信エラーにより記事を取得できませんでした。</p>';
             });
     }
+
+    // 7. Fetch Spotify Episodes via RSS to JSON adapter
+    const spotifyContainer = document.getElementById('spotify-container');
+    if (spotifyContainer) {
+        fetch('https://api.rss2json.com/v1/api.json?rss_url=https://anchor.fm/s/108d550e4/podcast/rss')
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok' && data.items && data.items.length > 0) {
+                    spotifyContainer.innerHTML = ''; // clear loading
+                    
+                    // Display up to 3 items
+                    const episodes = data.items.slice(0, 3);
+                    
+                    episodes.forEach((item, index) => {
+                        let embedSrc = '';
+                        if (item.link.includes('podcasters.spotify.com')) {
+                            const url = new URL(item.link);
+                            embedSrc = `https://podcasters.spotify.com${url.pathname.replace('/episodes/', '/embed/episodes/')}`;
+                        }
+                        
+                        if (embedSrc) {
+                            const iframeHtml = `
+                                <iframe style="border-radius:12px; margin-bottom: 1rem;"
+                                    src="${embedSrc}"
+                                    width="100%" height="152" frameBorder="0" allowfullscreen=""
+                                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                    loading="lazy"></iframe>
+                            `;
+                            spotifyContainer.insertAdjacentHTML('beforeend', iframeHtml);
+                        }
+                    });
+                } else {
+                    spotifyContainer.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; color: var(--gray-600);">エピソードが見つかりませんでした。</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching Spotify episodes:', error);
+                spotifyContainer.innerHTML = '<p class="text-center" style="grid-column: 1 / -1; color: var(--gray-600);">通信エラーにより取得できませんでした。</p>';
+            });
+    }
 });
