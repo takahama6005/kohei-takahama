@@ -624,6 +624,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 20px;
     padding: 2.5rem 2rem;
     box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     transition: var(--transition);
     display: flex;
     flex-direction: column;
@@ -632,6 +633,7 @@ h1, h2, h3, h4, h5, h6 {
 .article-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-md);
+    border-color: rgba(0, 0, 0, 0.12);
 }
 
 .article-date {
