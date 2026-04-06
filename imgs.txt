@@ -1,0 +1,2 @@
+FB_IMG=
+NOTE_IMG=https://assets.st-note.com/production/uploads/images/202207701/8113672091ddfe9bbcc9af2ce8ea85b8.jpg?fit=bounds&amp;format=jpeg&amp;height=1024&amp;quality=85&amp;width=1024
